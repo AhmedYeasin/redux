@@ -1,11 +1,13 @@
 import { Minus, PlusIcon } from "lucide-react"
 import { Button } from "./components/ui/button.tsx"
-import { useDispatch, useSelector } from "react-redux"
-import { decrement, increment } from "./redux/counter/counterSlice.ts";
+
+import { decrement, increment, incrementByValue, selectValue } from "./redux/counter/counterSlice.ts";
+
+import { useAppDispatch, useAppSelector } from "./redux/hooks.ts";
 
 function App() {
-  const value = useSelector((state)=> state.counter.value);
-  const dispatch = useDispatch();
+  const value = useAppSelector(selectValue);
+  const dispatch = useAppDispatch();
 
   return (
     <div>
@@ -18,21 +20,21 @@ function App() {
             <p className="text-sm text-muted-foreground">
               State managed using Redux Toolkit
             </p>
-            
+
           </div>
           <div className="flex items-center gap-2">
             <div className="flex-cols items-center text-center gap-2">
-             Counter Value<span className="text-5xl font-medium">
-              <p> {value}</p>
-            </span>
-            <Button variant= "outline" size="sm" className="mr-6"
-            onClick={()=> dispatch(decrement())}>
-              <Minus/> 
-            </Button>
-             
-            <Button variant= "outline" size="sm" onClick={()=> dispatch(increment())}>
-              <PlusIcon/>
-            </Button>
+              Counter Value<span className="text-5xl font-medium">
+                <p> {value}</p>
+              </span>
+              <Button variant="outline" size="sm" className="mr-6"
+                onClick={() => dispatch(decrement())}>
+                <Minus />
+              </Button>
+
+              <Button variant="outline" size="sm" onClick={() => dispatch(incrementByValue(5))}>
+                <PlusIcon />
+              </Button>
             </div>
             {/* <Button size="sm">
               <PlusIcon className="size-4" />
