@@ -1,14 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import tasksSlice from "../tasks/tasks.slice.ts";
 
-interface initialState{
-   
-    priority: string;
-   
+interface InitialState {
+  priority: string;
 }
 
-const initialState = {
- priority: ""
+const initialState: InitialState = {
+  priority: "",
 };
 
 const filtersSlice = createSlice({

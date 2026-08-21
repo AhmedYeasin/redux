@@ -1,13 +1,25 @@
 import { Card } from "@/components/ui/card";
 
 export function TaskStats() {
-  const stats = { byStatus: "", total: 0, byPriority: "" };
+  const stats = {
+    total: 0,
+    byStatus: {
+      pending: 0,
+      "in-progress": 0,
+      completed: 0,
+    },
+    byPriority: {
+      high: 0,
+      medium: 0,
+      low: 0,
+    },
+  };
 
   const items: Array<{ label: string; value: number; tone: string }> = [
     { label: "Total", value: stats.total, tone: "text-foreground" },
     {
       label: "Pending",
-      value: stats.byStatus["pending"],
+      value: stats.byStatus.pending,
       tone: "text-slate-600 dark:text-slate-300",
     },
     {
@@ -16,8 +28,8 @@ export function TaskStats() {
       tone: "text-blue-600 dark:text-blue-300",
     },
     {
-      label: "Done",
-      value: stats.byStatus["done"],
+      label: "Completed",
+      value: stats.byStatus.completed,
       tone: "text-emerald-600 dark:text-emerald-300",
     },
     {

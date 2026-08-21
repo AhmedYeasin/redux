@@ -15,14 +15,25 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { PriorityBadge } from "./PriorityBadge";
 import { cn } from "@/lib/utils";
+import {
+  STATUS_LABEL,
+  TASK_STATUS,
+  type Task,
+  type TaskStatus,
+} from "@/redux/features/tasks/index.ts";
 
-const STATUS_DOT = {
+const STATUS_DOT: Record<TaskStatus, string> = {
   pending: "bg-slate-400",
   "in-progress": "bg-blue-500",
-  done: "bg-emerald-500",
+  completed: "bg-emerald-500",
 };
 
-export function TaskItem({ task, onEdit }) {
+interface TaskItemProps {
+  task: Task;
+  onEdit: (id: string) => void;
+}
+
+export function TaskItem({ task, onEdit }: TaskItemProps) {
   const handleStatusChange = (value: string) => {
     console.log(value);
   };
@@ -37,13 +48,10 @@ export function TaskItem({ task, onEdit }) {
         <div className="flex items-center gap-2">
           <span
             aria-hidden
-            className={cn(
-              "inline-block h-2 w-2 rounded-full",
-              // STATUS_DOT[task.status],
-            )}
+            className={cn("inline-block h-2 w-2 rounded-full", STATUS_DOT[task.status])}
           />
           <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            {/* {STATUS_LABEL[task.status]} */}
+            {STATUS_LABEL[task.status]}
           </span>
           <span className="text-xs text-muted-foreground">·</span>
           <span className="text-xs text-muted-foreground">
@@ -54,7 +62,7 @@ export function TaskItem({ task, onEdit }) {
         <h3
           className={cn(
             "font-semibold leading-tight",
-            task.status === "done" && "line-through text-muted-foreground",
+            task.status === "completed" && "line-through text-muted-foreground",
           )}
         >
           {task.title}
@@ -83,11 +91,11 @@ export function TaskItem({ task, onEdit }) {
             value={task.status}
             onValueChange={handleStatusChange}
           >
-            {/* {TASK_STATUSES.map((s) => (
-              <DropdownMenuRadioItem key={s} value={s}>
-                {STATUS_LABEL[s]}
+            {TASK_STATUS.map((status) => (
+              <DropdownMenuRadioItem key={status} value={status}>
+                {STATUS_LABEL[status]}
               </DropdownMenuRadioItem>
-            ))} */}
+            ))}
           </DropdownMenuRadioGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem onSelect={() => onEdit(task.id)}>

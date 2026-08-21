@@ -1,4 +1,4 @@
-import { useForm, Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import {
   Dialog,
   DialogContent,
@@ -11,13 +11,48 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  PRIORITY_LABEL,
+  STATUS_LABEL,
+  TASK_PRIORITY,
+  TASK_STATUS,
+  type TaskPriority,
+  type TaskStatus,
+} from "@/redux/features/tasks/index.ts";
 
-export function TaskFormDialog({ open, mode, onClose }) {
-  const { register, handleSubmit, control } = useForm();
+export type DialogMode = "create" | "edit";
 
-  const onSubmit = (values) => {
-    console.log(values);
+interface TaskFormDialogProps {
+  open: boolean;
+  mode: DialogMode;
+  editingId?: string | null;
+  onClose: () => void;
+}
+
+type TaskFormValues = {
+  title: string;
+  description: string;
+  status: TaskStatus;
+  priority: TaskPriority;
+};
+
+export function TaskFormDialog({
+  open,
+  mode,
+  editingId,
+  onClose,
+}: TaskFormDialogProps) {
+  const { register, handleSubmit, control } = useForm<TaskFormValues>({
+    defaultValues: {
+      title: "",
+      description: "",
+      status: "pending",
+      priority: "medium",
+    },
+  });
+
+  const onSubmit = (values: TaskFormValues) => {
+    console.log({ editingId, ...values });
     onClose();
   };
 
@@ -73,11 +108,17 @@ export function TaskFormDialog({ open, mode, onClose }) {
                 control={control}
                 name="status"
                 render={({ field }) => (
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                  </Select>
+                  <select
+                    value={field.value}
+                    onChange={(event) => field.onChange(event.target.value as TaskStatus)}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  >
+                    {TASK_STATUS.map((status) => (
+                      <option key={status} value={status}>
+                        {STATUS_LABEL[status]}
+                      </option>
+                    ))}
+                  </select>
                 )}
               />
             </div>
@@ -88,11 +129,17 @@ export function TaskFormDialog({ open, mode, onClose }) {
                 control={control}
                 name="priority"
                 render={({ field }) => (
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select priority" />
-                    </SelectTrigger>
-                  </Select>
+                  <select
+                    value={field.value}
+                    onChange={(event) => field.onChange(event.target.value as TaskPriority)}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  >
+                    {TASK_PRIORITY.map((priority) => (
+                      <option key={priority} value={priority}>
+                        {PRIORITY_LABEL[priority]}
+                      </option>
+                    ))}
+                  </select>
                 )}
               />
             </div>

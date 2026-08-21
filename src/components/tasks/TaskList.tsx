@@ -1,9 +1,14 @@
 import { TaskItem } from "./TaskItem";
 import { Card } from "@/components/ui/card";
 import { ClipboardListIcon, FilterIcon } from "lucide-react";
+import type { Task } from "@/redux/features/tasks/index.ts";
 
-export function TaskList({ onEdit }) {
-  const tasks = [];
+interface TaskListProps {
+  onEdit: (id: string) => void;
+}
+
+export function TaskList({ onEdit }: TaskListProps) {
+  const tasks: Task[] = [];
   const total = 0;
   const isFiltering = false;
 

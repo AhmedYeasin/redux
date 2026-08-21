@@ -14,9 +14,11 @@ const SORT_LABEL = {
   newest: "Newest first",
   oldest: "Oldest first",
   priority: "By priority",
-};
+} as const;
 
 export function FiltersBar() {
+  const status = "all";
+
   return (
     <Card className="flex flex-col gap-3 p-3 sm:flex-row sm:items-center">
       <div className="relative flex-1">
@@ -27,27 +29,31 @@ export function FiltersBar() {
       <div className="grid grid-cols-3 gap-2 sm:flex sm:items-center">
         <Select value={status}>
           <SelectTrigger className="min-w-[7.5rem]">
-            <SelectValue />
+            <SelectValue placeholder="All statuses" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All statuses</SelectItem>
           </SelectContent>
         </Select>
 
-        <Select>
+        <Select value="all">
           <SelectTrigger className="min-w-[7.5rem]">
-            <SelectValue />
+            <SelectValue placeholder="All priorities" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All priorities</SelectItem>
           </SelectContent>
         </Select>
 
-        <Select>
+        <Select value="newest">
           <SelectTrigger className="min-w-[7.5rem]">
-            <SelectValue />
+            <SelectValue placeholder="Sort" />
           </SelectTrigger>
-          <SelectContent></SelectContent>
+          <SelectContent>
+            <SelectItem value="newest">{SORT_LABEL.newest}</SelectItem>
+            <SelectItem value="oldest">{SORT_LABEL.oldest}</SelectItem>
+            <SelectItem value="priority">{SORT_LABEL.priority}</SelectItem>
+          </SelectContent>
         </Select>
       </div>
 
