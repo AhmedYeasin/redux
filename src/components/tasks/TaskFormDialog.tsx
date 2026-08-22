@@ -16,44 +16,40 @@ import {
   STATUS_LABEL,
   TASK_PRIORITY,
   TASK_STATUS,
-  type TaskPriority,
-  type TaskStatus,
+
 } from "@/redux/features/tasks/index.ts";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select.tsx";
+import { useAppDispatch } from "@/redux/hooks.ts";
+import { addTask } from "@/redux/features/tasks/tasks.slice.ts";
 
 export type DialogMode = "create" | "edit";
 
-interface TaskFormDialogProps {
-  open: boolean;
-  mode: DialogMode;
-  editingId?: string | null;
-  onClose: () => void;
-}
+// interface TaskFormDialogProps {
+//   open: boolean;
+//   mode: DialogMode;
+//   editingId?: string | null;
+//   onClose: () => void;
+// }
 
-type TaskFormValues = {
-  title: string;
-  description: string;
-  status: TaskStatus;
-  priority: TaskPriority;
-};
+// type TaskFormValues = {
+//   title: string;
+//   description: string;
+//   status: TaskStatus;
+//   priority: TaskPriority;
+// };
 
 export function TaskFormDialog({
   open,
   mode,
   editingId,
   onClose,
-}: TaskFormDialogProps) {
-  const { register, handleSubmit, control } = useForm<TaskFormValues>({
-    defaultValues: {
-      title: "",
-      description: "",
-      status: "pending",
-      priority: "medium",
-    },
-  });
+}) {
+  const { register, handleSubmit, control } = useForm()
+  const dispatch = useAppDispatch()
 
-  const onSubmit = (values: TaskFormValues) => {
-    console.log({ editingId, ...values });
+  const onSubmit = (values) => {
+    console.log(values);
+    dispatch(addTask(values))
     onClose();
   };
 
@@ -143,18 +139,18 @@ export function TaskFormDialog({
                 control={control}
                 name="priority"
                 render={({ field }) => (
-                <Select>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Priority" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {TASK_PRIORITY.map((priority)=>(
-                      <SelectItem key={priority} value={priority}>
-                        {PRIORITY_LABEL[priority]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  <Select>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Priority" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {TASK_PRIORITY.map((priority) => (
+                        <SelectItem key={priority} value={priority}>
+                          {PRIORITY_LABEL[priority]}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   // <select
                   //   value={field.value}
                   //   onChange={(event) => field.onChange(event.target.value as TaskPriority)}
