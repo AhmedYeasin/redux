@@ -19,6 +19,7 @@ import {
   type TaskPriority,
   type TaskStatus,
 } from "@/redux/features/tasks/index.ts";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select.tsx";
 
 export type DialogMode = "create" | "edit";
 
@@ -108,17 +109,30 @@ export function TaskFormDialog({
                 control={control}
                 name="status"
                 render={({ field }) => (
-                  <select
-                    value={field.value}
-                    onChange={(event) => field.onChange(event.target.value as TaskStatus)}
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                  >
-                    {TASK_STATUS.map((status) => (
-                      <option key={status} value={status}>
-                        {STATUS_LABEL[status]}
-                      </option>
-                    ))}
-                  </select>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {TASK_STATUS.map((status) => (
+                        <SelectItem key={status} value={status}>
+                          {STATUS_LABEL[status]}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+
+                  </Select>
+                  // <select
+                  //   value={field.value}
+                  //   onChange={(event) => field.onChange(event.target.value as TaskStatus)}
+                  //   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  // >
+                  //   {TASK_STATUS.map((status) => (
+                  //     <option key={status} value={status}>
+                  //       {STATUS_LABEL[status]}
+                  //     </option>
+                  //   ))}
+                  // </select>
                 )}
               />
             </div>
@@ -129,17 +143,29 @@ export function TaskFormDialog({
                 control={control}
                 name="priority"
                 render={({ field }) => (
-                  <select
-                    value={field.value}
-                    onChange={(event) => field.onChange(event.target.value as TaskPriority)}
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                  >
-                    {TASK_PRIORITY.map((priority) => (
-                      <option key={priority} value={priority}>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Priority" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {TASK_PRIORITY.map((priority)=>(
+                      <SelectItem key={priority} value={priority}>
                         {PRIORITY_LABEL[priority]}
-                      </option>
+                      </SelectItem>
                     ))}
-                  </select>
+                  </SelectContent>
+                </Select>
+                  // <select
+                  //   value={field.value}
+                  //   onChange={(event) => field.onChange(event.target.value as TaskPriority)}
+                  //   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  // >
+                  //   {TASK_PRIORITY.map((priority) => (
+                  //     <option key={priority} value={priority}>
+                  //       {PRIORITY_LABEL[priority]}
+                  //     </option>
+                  //   ))}
+                  // </select>
                 )}
               />
             </div>
